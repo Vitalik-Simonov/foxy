@@ -1,0 +1,9 @@
+static 1300 900
+static 1100 900
+static 900 900
+static 700 900
+static 100 1000
+static 250 1000
+static 400 1000
+static 550 1000
+fuel 1200 800
