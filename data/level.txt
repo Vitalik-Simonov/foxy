@@ -1,3 +1,4 @@
+static 1500 900
 static 1300 900
 static 1100 900
 static 900 900
