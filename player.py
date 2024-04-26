@@ -8,7 +8,8 @@ class Player(pg.sprite.Sprite):
         self.game = game
         super().__init__(game.all_sprites)
         # создание изображения для спрайта
-        self.image = pg.image.load('data/player.png').convert_alpha()
+        self.im = pg.image.load('data/player.png').convert_alpha()
+        self.image = self.im.copy()
         # создание маски для спрайта
         self.mask = pg.mask.from_surface(self.image)
         # создание хитбокса для спрайта
@@ -34,7 +35,17 @@ class Player(pg.sprite.Sprite):
 
     def update(self):
         if time.time() - self.time_damaged > 0.1:  # Если время анимации нанесения урона спрайту вышло
-            self.image = pg.image.load('data/player.png').convert_alpha()  # Восстанавливаем изображение спрайта
+            if self.speed_x > 0:
+                self.image = self.im.copy()  # Восстанавливаем изображение спрайта
+            else:
+                self.image = pg.transform.flip(self.im.copy(), True, False)
+        else:
+            if self.speed_x > 0:
+                self.image = pg.image.load('data/player_damaged.png').convert_alpha()
+            else:
+                self.image = pg.transform.flip(pg.image.load('data/player_damaged.png').convert_alpha(), True, False)
+        # создание маски для спрайта
+        self.mask = pg.mask.from_surface(self.image)
         if not self.is_live or self.y >= MAP_HEIGHT - self.rect.height - 1:  # Если спрайт умер или вышел за пределы экрана
             self.kill()
             self.game.running = False
