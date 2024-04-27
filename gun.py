@@ -57,6 +57,7 @@ class Gun(Rotate_object):
         super().__init__(game, master, im, 0, im.get_width())
         self.speed = 0.5
         self.last = time()
+        self.last_drone = 0
 
     def update(self):
         x, y = pg.mouse.get_pos()
@@ -75,12 +76,21 @@ class Gun(Rotate_object):
 
         if pg.mouse.get_pressed(3)[0]:
             self.shot()
+        if pg.key.get_pressed()[pg.K_SPACE]:
+            self.drone()
 
     def shot(self):
         if time() - self.last >= self.speed:
             self.game.sound.play('shot')
             b = Bullet(self.game, self)
             self.last = time()
+
+    def drone(self):
+        if time() - self.last_drone >= self.speed:
+            self.game.sound.play('shot')
+            b = Drone(self.game, self)
+            self.game.camera.target = b
+            self.last_drone = time()
 
 
 class Bullet(pg.sprite.Sprite):
@@ -116,3 +126,35 @@ class Bullet(pg.sprite.Sprite):
         if s:
             self.kill()
             s[0].damage(self.damage)
+
+
+class Drone(pg.sprite.Sprite):
+    def __init__(self, game, gun, speed=1000, damage=2):
+        super().__init__(game.all_sprites)
+        self.game = game
+        self.gun = gun
+        self.speed = speed
+        self.damage = damage
+        self.x = self.gun.spawnx  # координаты
+        self.y = self.gun.spawny
+        self.spawnx = self.x # координаты спавна
+        self.spawny = self.y
+        self.angle = self.gun.angle
+        self.image = pg.image.load('data/drone.png').convert_alpha()  # создание изображения для спрайта
+        self.image = pg.transform.rotate(self.image, -self.angle)  # поворот спрайта
+
+        self.mask = pg.mask.from_surface(self.image)  # создание маски для спрайта
+
+        self.rect = self.image.get_rect()  # создание хитбокса для спрайта
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+    def update(self):
+        self.x += self.speed * cos(radians(self.angle)) / self.game.fps
+        self.y += self.speed * sin(radians(self.angle)) / self.game.fps
+        self.rect.x = self.x
+        self.rect.y = self.y
+        if any([pg.sprite.collide_mask(self, i) for i in self.game.platforms]): # Проверка на столкновение:
+            self.kill()
+        if (self.x - self.spawnx) ** 2 + (self.y - self.spawny) ** 2 > 1000 ** 2:
+            self.kill()
