@@ -32,12 +32,19 @@ class Player(pg.sprite.Sprite):
         self.time_damaged = -100
         # здоровье спрайта
         self.health = 10
+        self.direction = 1
 
     def update(self):
+        if self.speed_x > 0:
+            self.direction = 1
+        elif self.speed_x < 0:
+            self.direction = -1
         if time.time() - self.time_damaged > 0.1:  # Если время анимации нанесения урона спрайту вышло
-            if self.speed_x > 0:
+            if self.direction > 0:
+                self.direction = 1
                 self.image = self.im.copy()  # Восстанавливаем изображение спрайта
             else:
+                self.direction = -1
                 self.image = pg.transform.flip(self.im.copy(), True, False)
         else:
             if self.speed_x > 0:
