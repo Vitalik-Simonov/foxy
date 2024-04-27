@@ -63,6 +63,12 @@ def load_platforms(game):
             platforms.append(MovePlatform(game, int(x), int(y), int(args[0])))
         elif t == 'fuel':
             Fuel(game, int(x), int(y))
+        elif t == 'box':
+            Box(game, int(x), int(y))
+        elif t == 'gear':
+            Gear(game, int(x), int(y))
+        elif t == 'spike':
+            Spike(game, (int(x), int(y)))
         elif t == 'rocket':
             Rocket(game, int(x), int(y))
         elif t == 'enemy':

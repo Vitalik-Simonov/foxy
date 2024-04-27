@@ -75,11 +75,11 @@ class EnemyBase(Mob): # наследование от Mob
         super().__init__(game, pos, health, image, game.enemies)
         self.flag = False # флаг для отслеживания касался ли спрайт игрока
 
-    def update_damage(self):
+    def update_damage(self, k=2):
         if pg.sprite.collide_mask(self, self.game.player):
             if not self.flag:
                 self.flag = True
-                self.game.player.damage(2)
+                self.game.player.damage(k)
         else:
             self.flag = False
 
@@ -117,3 +117,12 @@ class Enemy(EnemyBase): # наследование от EnemyBase
         self.health -= k
         if self.health <= 0:
             self.is_live = False
+
+
+class Spike(EnemyBase): # наследование от EnemyBase
+    def __init__(self, game, pos):
+        im = pg.image.load('data/spike.png').convert_alpha()  # Загрузка изображения спрайта
+        super().__init__(game, pos, 10 ** 10, im)
+
+    def update(self):
+        self.update_damage(10)
