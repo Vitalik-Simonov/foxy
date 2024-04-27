@@ -85,6 +85,10 @@ class Player(pg.sprite.Sprite):
         self.rect.y = self.y
 
         if any([pg.sprite.collide_mask(self, i) for i in self.game.platforms]):  # Проверка на столкновение с платформами
+            if self.speed_y > 1500:
+                self.kill()
+                self.game.running = False
+                return
             self.y -= self.speed_y / self.game.fps  # Учитывается fps
             self.rect.y = self.y
             if any([pg.sprite.collide_mask(self, i) for i in self.game.platforms]):

@@ -11,6 +11,7 @@ from mobs import *
 from time import *
 import os
 import sys
+import time
 os.chdir('\\'.join(sys.argv[0].split('\\')[:-1]))
 
 
@@ -38,11 +39,17 @@ class App:
         Pause(self)
         SoundOnOff(self)
 
+    def delete_all(self):
+        self.all_sprites.empty()
+        self.ui.empty()
+        self.mobs.empty()
+        self.enemies.empty()
+        self.platforms = []
+
     def update(self):
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                self.running = False
-                break
+                exit()
         self.all_sprites.update()
         self.ui.update()
         self.camera.update()
@@ -59,6 +66,7 @@ class App:
         self.ui.draw(self.screen)
 
     async def run(self):
+        StartMenu(self)
         self.running = True
         while self.running:
             self.update()
@@ -70,9 +78,73 @@ class App:
             self.fps = self.clock.get_fps()
             if self.fps == 0:
                 self.fps = 60
+        if self.winning:
+            self.happy_end()
+        else:
+            self.end()
+
+    def end(self):
+        orig_im = pg.image.load('data/anim_bg2.png')
+        w, h = orig_im.get_size()
+        for i in range(800, 100, -15):
+            self.screen.blit(pg.transform.scale(orig_im, (w * i / 199, h * i / 199)), (400 - i * 4, 200 - i * 2))
+            pg.display.flip()
+        time.sleep(2)
+
+    def happy_end(self):
+        self.screen.blit(pg.image.load('data/anim_bg.png'), (0, 0))
+        pg.display.flip()
+        rocket = AnimatioRocket(self)
+        orig_im = pg.image.load('data/rocket_fire.png')
+        rocket.rect.right = 900
+        rocket.rect.bottom = 577
+        w, h = orig_im.get_size()
+        h *= 0.054
+        w *= 0.054
+        for i in range(45):
+            self.screen.blit(pg.image.load('data/anim_bg.png'), (0, 0))
+            rocket.rect.x -= 1.6
+            rocket.rect.y -= 1.6
+            self.screen.blit(rocket.image, rocket.rect)
+            pg.display.flip()
+            self.clock.tick(FPS)
+            rocket.image = pg.transform.rotate(pg.transform.scale(orig_im, (w, h)), 45 + i)
+            x, y = rocket.rect.right, rocket.rect.bottom
+            rocket.rect = rocket.image.get_rect()
+            rocket.rect.right, rocket.rect.bottom = x, y
+            w *= 1.05
+            h *= 1.05
+        for i in range(200):
+            self.screen.blit(pg.image.load('data/anim_bg.png'), (0, 0))
+            rocket.rect.x -= 5
+            self.screen.blit(rocket.image, rocket.rect)
+            pg.display.flip()
+            self.clock.tick(FPS)
+
+
+class AnimatioRocket(pg.sprite.Sprite):
+    def __init__(self, game):
+        super(AnimatioRocket, self).__init__()
+        self.game = game
+        self.image = pg.transform.scale(pg.transform.rotate(pg.image.load('data/rocket_fire.png').convert_alpha(), -90),
+                                        (pg.image.load('data/rocket_fire.png').get_height() // 2,
+                                         pg.image.load('data/rocket_fire.png').get_width() // 2))
+        self.rect = self.image.get_rect()
+        self.rect.x = -self.image.get_width()
+        self.rect.y = HEIGHT // 4
+
+    def update1(self):
+        self.rect.x += 5
+
+    def update2(self):
+        self.rect.x += 3.6
+        self.rect.y += 3.6
 
 
 if __name__ == '__main__':
     app = App()
-    app.setup()
-    asyncio.run(app.run())
+    while True:
+        app.setup()
+        asyncio.run(app.run())
+        app.sound.stop_music()
+        app.delete_all()

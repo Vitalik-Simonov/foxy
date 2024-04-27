@@ -153,7 +153,7 @@ class StartMenu:
     def __init__(self, game):
         self.game = game
         self.play = Start(self.game)
-        self.slider = Slider(self.game, 'black', 'red', 1100, 700, 450, 100, pg.mixer.music.get_volume())
+        self.slider = Slider(self.game, 'black', 'red', 1200, 1000, 450, 100, pg.mixer.music.get_volume())
         self.run()
 
     def check_events(self):
@@ -168,12 +168,12 @@ class StartMenu:
             self.check_events()
             self.game.screen.blit(pg.image.load('data/bg_start.png'), (0, 0))
             self.game.screen.blit(self.play.image, self.play.rect)
-            if self.game.sound_on:
+            if self.game.sound.music.get_volume() > 0.01:
                 self.slider.update()
             self.game.screen.blit(self.slider.image, self.slider.rect)
             if self.play.update():
                 del self.play
                 break
-            pg.mixer.music.set_volume(self.slider.value)
+            self.game.sound.set_volume(self.slider.value)
             pg.display.flip()
-            self.game.clock.tick(self.game.FPS)
+            self.game.clock.tick(FPS)
