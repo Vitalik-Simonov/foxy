@@ -1,13 +1,20 @@
 static 1500 900
+static 1400 900
 static 1300 900
+static 1200 900
 static 1100 900
+static 1000 900
+static 1000 850
 static 900 900
 static 700 900
 static 100 1000
 static 250 1000
 static 400 1000
 static 550 1000
+move 550 600 500
 fuel 1200 800
 fuel 1000 800
 fuel 800 800
+fuel 1200 600
+enemy 130 825
 rocket 1500 500

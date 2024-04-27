@@ -15,4 +15,6 @@ class Sound:
 
     def play(self, sound):  # Проигрывание звука
         if self.music.get_volume() > 0.01:  # Если громкость больше 0.01
-            pg.mixer.Sound.play(pg.mixer.Sound('data/' + sound + '.ogg'))
+            s = pg.mixer.Sound('data/' + sound + '.ogg')  # Загрузка звука
+            s.set_volume(self.music.get_volume())
+            pg.mixer.Sound.play(s)

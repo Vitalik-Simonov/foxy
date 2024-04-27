@@ -22,7 +22,7 @@ class Player(pg.sprite.Sprite):
         # компоненты скорости по оси X и Y
         self.speed_x = 0
         self.speed_y = 0
-        self.MAX_SPEED = 400
+        self.MAX_SPEED = 350
 
         # переменная-флаг для отслеживания в прыжке ли спрайт
         self.on_ground = False

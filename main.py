@@ -30,12 +30,11 @@ class App:
         self.ui = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
-        self.player = Player(self)
         self.platforms = load_platforms(self)
+        self.player = Player(self)
         Gun(self, self.player)
         self.camera = Camera(self, self.player)
         self.sound = Sound()
-        Enemy(self, (WIDTH // 4 - 350, 825))
         Pause(self)
         SoundOnOff(self)
 
