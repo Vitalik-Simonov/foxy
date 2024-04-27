@@ -78,6 +78,7 @@ class Gun(Rotate_object):
 
     def shot(self):
         if time() - self.last >= self.speed:
+            self.game.sound.play('shot')
             b = Bullet(self.game, self)
             self.last = time()
 
