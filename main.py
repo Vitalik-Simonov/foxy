@@ -70,6 +70,17 @@ class App:
 
     async def run(self):
         StartMenu(self)
+        self.screen.blit(pg.image.load('data/instruction.png'), (0, 0))
+        pg.display.flip()
+        run = True
+        while run:
+            for event in pg.event.get():
+                if pg.mouse.get_pressed()[0]:
+                    run = False
+                    break
+                elif event.type == pg.QUIT:
+                    exit()
+            await asyncio.sleep(0)
         self.running = True
         while self.running:
             self.update()

@@ -17,7 +17,7 @@ class Player(pg.sprite.Sprite):
 
         # начальные координаты спрайта
         self.x = 100
-        self.y = HEIGHT // 4 * 3
+        self.y = HEIGHT // 2
 
         # компоненты скорости по оси X и Y
         self.speed_x = 0
