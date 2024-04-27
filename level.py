@@ -66,5 +66,8 @@ def load_platforms(game):
         elif t == 'rocket':
             Rocket(game, int(x), int(y))
         elif t == 'enemy':
-            Enemy(game, (int(x), int(y)))
+            if args:
+                Enemy(game, (int(x), int(y)), int(args[0]))
+            else:
+                Enemy(game, (int(x), int(y)))
     return platforms

@@ -19,4 +19,6 @@ GREEN = (0, 255, 0)
 GOLD = (255, 215, 0)
 BLACK = (0, 0, 0)
 font = pg.font.Font(None, 36)
-TARGET_SCORE = 4
+TARGET_FUEL = 5
+TARGET_GEAR = 4
+TARGET_BOX = 1

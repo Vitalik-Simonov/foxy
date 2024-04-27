@@ -25,7 +25,9 @@ class App:
         self.screen2 = pg.surface.Surface((MAP_WIDTH, MAP_HEIGHT))  # для камеры
 
     def setup(self):  # инициализация игры
-        self.score = 0
+        self.fuel = 0  # количество бензина
+        self.gear = 0  # количество шестеренок
+        self.box = 0  # количество ящиков
         self.winning = False
         self.all_sprites = pg.sprite.Group()
         self.ui = pg.sprite.Group()
@@ -57,12 +59,13 @@ class App:
     def draw(self):
         self.screen2.fill((100, 100, 100))
         self.all_sprites.draw(self.screen2)
-        score_text = font.render("Счёт: " + str(self.score), True, WHITE)
+        score_text = font.render(f'Счёт: {str(self.fuel)}      {str(self.gear)}      {str(self.box)}', True, WHITE)
         score_rect = score_text.get_rect()  # создание хитбокса текста
         score_rect.topleft = (100, 20)
         self.screen.fill('black')
         self.screen.blit(self.screen2, (-self.camera.x + WIDTH // 2, -self.camera.y + HEIGHT // 2))
         self.screen.blit(score_text, score_rect)
+        self.screen.blit(pg.image.load('data/ui.png'), (190, 20))
         self.ui.draw(self.screen)
 
     async def run(self):

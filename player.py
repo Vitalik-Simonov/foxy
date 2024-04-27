@@ -16,8 +16,8 @@ class Player(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         # начальные координаты спрайта
-        self.x = WIDTH // 2
-        self.y = HEIGHT // 2
+        self.x = 100
+        self.y = HEIGHT // 4 * 3
 
         # компоненты скорости по оси X и Y
         self.speed_x = 0
