@@ -20,6 +20,7 @@ class Platform(pg.sprite.Sprite):
         pass
 
 
+# загрузка уровня
 def load_platforms(game):
     platforms = []
     level_load = open('data\\level.txt', 'r').readlines() # читаем уровень
@@ -29,4 +30,6 @@ def load_platforms(game):
             platforms.append(Platform(game, int(x), int(y)))
         elif t == 'fuel':
             Fuel(game, int(x), int(y))
+        elif t == 'rocket':
+            Rocket(game, int(x), int(y))
     return platforms

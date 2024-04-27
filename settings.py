@@ -7,6 +7,8 @@ pg.init()
 WIDTH = 1920
 HEIGHT = 1080
 
+FPS = 60000
+
 MAP_WIDTH = WIDTH * 3
 MAP_HEIGHT = HEIGHT * 3
 # константы-цвета
@@ -17,3 +19,4 @@ GREEN = (0, 255, 0)
 GOLD = (255, 215, 0)
 BLACK = (0, 0, 0)
 font = pg.font.Font(None, 36)
+TARGET_SCORE = 4

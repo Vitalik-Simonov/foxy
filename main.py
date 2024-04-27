@@ -1,5 +1,6 @@
 import pygame as pg
 from settings import *
+from ui import *
 import asyncio
 from sound import *
 from player import *
@@ -24,7 +25,9 @@ class App:
 
     def setup(self):  # инициализация игры
         self.score = 0
+        self.winning = False
         self.all_sprites = pg.sprite.Group()
+        self.ui = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.player = Player(self)
@@ -33,6 +36,8 @@ class App:
         self.camera = Camera(self, self.player)
         self.sound = Sound()
         Enemy(self, (WIDTH // 4 - 350, 825))
+        Pause(self)
+        SoundOnOff(self)
 
     def update(self):
         for event in pg.event.get():
@@ -40,6 +45,7 @@ class App:
                 self.running = False
                 break
         self.all_sprites.update()
+        self.ui.update()
         self.camera.update()
 
     def draw(self):
@@ -47,11 +53,11 @@ class App:
         self.all_sprites.draw(self.screen2)
         score_text = font.render("Счёт: " + str(self.score), True, WHITE)
         score_rect = score_text.get_rect()  # создание хитбокса текста
-        score_rect.topleft = (50, 50)
+        score_rect.topleft = (100, 20)
         self.screen.fill('black')
         self.screen.blit(self.screen2, (-self.camera.x + WIDTH // 2, -self.camera.y + HEIGHT // 2))
         self.screen.blit(score_text, score_rect)
-        # print(-self.camera.x + WIDTH // 2, -self.camera.y + HEIGHT // 2)
+        self.ui.draw(self.screen)
 
     async def run(self):
         self.running = True
@@ -60,7 +66,7 @@ class App:
             self.draw()
 
             pg.display.flip()
-            self.clock.tick(60000)
+            self.clock.tick(FPS)
             await asyncio.sleep(0)
             self.fps = self.clock.get_fps()
             if self.fps == 0:

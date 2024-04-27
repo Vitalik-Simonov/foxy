@@ -8,3 +8,6 @@ static 250 1000
 static 400 1000
 static 550 1000
 fuel 1200 800
+fuel 1000 800
+fuel 800 800
+rocket 1500 500

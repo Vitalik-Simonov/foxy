@@ -10,8 +10,9 @@ class Sound:
     def stop_music(self):  # Остановка музыки
         self.music.stop()
 
-    def volume(self, k):  # Установка громкости
+    def set_volume(self, k):  # Установка громкости
         self.music.set_volume(k)
 
     def play(self, sound):  # Проигрывание звука
-        pg.mixer.Sound.play(pg.mixer.Sound('data/' + sound + '.ogg'))
+        if self.music.get_volume() > 0.01:  # Если громкость больше 0.01
+            pg.mixer.Sound.play(pg.mixer.Sound('data/' + sound + '.ogg'))
