@@ -8,8 +8,7 @@ class Fuel(pg.sprite.Sprite):
         super().__init__(game.all_sprites)
         self.game = game
         # создание изображения для спрайта
-        self.image = pg.Surface((16, 16))
-        self.image.fill(GOLD)
+        self.image = pg.image.load('data/fuel.png').convert_alpha()
 
         # создание хитбокса для спрайта
         self.rect = self.image.get_rect()

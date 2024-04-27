@@ -1,5 +1,6 @@
 import pygame as pg
 from settings import *
+import asyncio
 from sound import *
 from player import *
 from level import *
@@ -10,7 +11,6 @@ from time import *
 import os
 import sys
 os.chdir('\\'.join(sys.argv[0].split('\\')[:-1]))
-
 
 
 class App:
@@ -53,7 +53,7 @@ class App:
         self.screen.blit(score_text, score_rect)
         # print(-self.camera.x + WIDTH // 2, -self.camera.y + HEIGHT // 2)
 
-    def run(self):
+    async def run(self):
         self.running = True
         while self.running:
             self.update()
@@ -61,6 +61,7 @@ class App:
 
             pg.display.flip()
             self.clock.tick(60000)
+            await asyncio.sleep(0)
             self.fps = self.clock.get_fps()
             if self.fps == 0:
                 self.fps = 60
@@ -69,4 +70,4 @@ class App:
 if __name__ == '__main__':
     app = App()
     app.setup()
-    app.run()
+    asyncio.run(app.run())

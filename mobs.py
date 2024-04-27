@@ -65,9 +65,6 @@ class Mob(pg.sprite.Sprite):
         self.speed_x *= 0.96
 
     def damage(self, k):
-        self.game.sound.play('damage')  # Проигрывание звука нанесения урона
-        self.time_damaged = time.time()
-        self.image.fill('red')
         self.health -= k
         if self.health <= 0:
             self.is_live = False
@@ -86,6 +83,7 @@ class EnemyBase(Mob): # наследование от Mob
         else:
             self.flag = False
 
+
 class Enemy(EnemyBase): # наследование от EnemyBase
     def __init__(self, game, pos, patrol_dist=400):
         self.patrol_dist = patrol_dist
@@ -97,7 +95,7 @@ class Enemy(EnemyBase): # наследование от EnemyBase
 
     def update(self):
         if time.time() - self.time_damaged > 0.1:  # Если время анимации нанесения урона спрайту вышло
-            self.image.fill('green')  # Восстанавливаем изображение спрайта
+            self.image = pg.image.load('data/enemy.png').convert_alpha()  # Восстанавливаем изображение спрайта
         self.update_movements()
         self.update_damage()
         if not self.is_live:
@@ -111,3 +109,11 @@ class Enemy(EnemyBase): # наследование от EnemyBase
         elif self.x - self.start_x < 0:
             if self.speed < 0:
                 self.speed = -self.speed
+
+    def damage(self, k):
+        self.game.sound.play('damage')  # Проигрывание звука нанесения урона
+        self.time_damaged = time.time()
+        self.image = pg.image.load('data/enemy_damaged.png').convert_alpha()
+        self.health -= k
+        if self.health <= 0:
+            self.is_live = False
