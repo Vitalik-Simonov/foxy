@@ -20,7 +20,7 @@ move 1700 500 1000
 static 2900 600
 static 3000 600
 fuel 2920 500
-spike 2920 565
+spike 3000 565
 move 2800 700 200
 static 2700 800
 static 2500 900
